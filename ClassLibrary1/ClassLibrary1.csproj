@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LitJson" Version="0.18.0" />
+    <PackageReference Include="MySqlConnector" Version="2.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LiteLoader.NET">
+      <HintPath>..\..\..\..\Desktop\LiteLoader.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="LLMoney.NET">
+      <HintPath>..\..\..\..\Desktop\LLMoney.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\..\Downloads\mysql.data\MySql.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
