@@ -11,7 +11,6 @@ public class Trbank : IPluginInitializer
     Logger logger = new("trbank");
     Form a1 = new Form();
     RegCommand reg = new();
-    SqlHelper sqlHelper = new SqlHelper();
     //元信息
     public Dictionary<string, string> MetaData => new()
     {
@@ -28,6 +27,9 @@ public class Trbank : IPluginInitializer
         a1.Form1();
         a1.From2();
         a1.Form3();
-        
+
+        new SqlHelper().test();
+
+        logger.Info.WriteLine("OWO跨服银行插件加载完毕");
     }
 }

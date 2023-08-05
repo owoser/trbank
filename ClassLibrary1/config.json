@@ -1,0 +1,60 @@
+{
+	"db": {
+		"addr": "127.0.0.1",
+		"port": 3306,
+		"user": "root",
+		"pass": "admin233",
+		"base": "trbank"
+	},
+	"form": {
+		"main": {
+			"title": "OWO跨服银行",
+			"button": [
+				{
+					"text": "开户",
+					"icon": ""
+				},
+				{
+					"text": "存钱",
+					"icon": ""
+				},
+				{
+					"text": "取钱",
+					"icon": ""
+				}
+			],
+			"feedback": {
+				"kaihu_success": "账户开通成功!",
+				"kaihu_have_existed": "已有账户无须再次开通!" 
+			}
+		},
+		"cunqian": {
+			"title": "存钱",
+			"label": [
+				"存钱"
+			],
+			"input": [
+				"输入你要存入钱的数量"
+			],
+			"feedback": {
+				"success": "已存入: {deposit}, 账户余额: {money}",
+				"format_error": "你存钱可以存字符串是吧",
+				"not_enough_money": "余额不足，存钱失败! 余额:{money}"
+			}
+		},
+		"quqian": {
+			"title": "取钱",
+			"label": [
+				"取钱"
+			],
+			"input": [
+				"输入你要取出的钱的数量"
+			],
+			"feedback": {
+				"success": "已取出: {fetch}, 账户余额: {money}",
+				"format_error": "你取钱可以取字符串是吧",
+				"not_enough_money": "余额不足, 取钱失败! 余额:{money}"
+			}
+		}
+	}
+}

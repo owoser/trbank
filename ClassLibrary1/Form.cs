@@ -1,45 +1,46 @@
 ﻿using LiteLoader.Form;
+using LiteLoader.Logger;
 using LLMoney;
 using MC;
 using System.Linq.Expressions;
 
 namespace ClassLibrary1
 {
-
     internal class Form
     {
-        private static readonly SimpleForm BuildBaseForm = new("OWO跨服银行", ""); 
-        private static readonly CustomForm CunQian = new("存钱");
-        private static readonly CustomForm QuQian = new("取钱");
+        private static LoadConfig cfg = new LoadConfig();
+        private static readonly SimpleForm BuildBaseForm = new(cfg.get("form", "main", "title"), ""); 
+        private static readonly CustomForm CunQian = new(cfg.get("form", "cunqian", "title"));
+        private static readonly CustomForm QuQian = new(cfg.get("form", "quqian", "title"));
         SqlHelper sqlHelper = new SqlHelper();
+        private Logger logger = new("trbank");
+
         public void Form1()
         {
-            BuildBaseForm.Append(new("开户"));
-            BuildBaseForm.Append(new("存钱"));
-            BuildBaseForm.Append(new("取钱"));
-            
+            BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 0, "text"), cfg.get("form", "main", "button", 0, "icon")));
+            BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 1, "text"), cfg.get("form", "main", "button", 1, "icon")));
+            BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 2, "text"), cfg.get("form", "main", "button", 2, "icon")));
+
             BuildBaseForm.Callback = (pl, val) =>
             {
                 switch (val)
                 {
                     case 0:
-                        
-                       
                          sqlHelper.creatSql1(pl.RealName, pl.Xuid);
                             
                          if (sqlHelper.inture == true)
                          {
-                            pl.SendText("已有账户无需再次开通!");
+                            pl.SendText(cfg.get("form", "main", "feedback", "kaihu_have_existed"));
                          }
                          else
                          {
-                             pl.SendText("账户开通成功!");
+                             pl.SendText(cfg.get("form", "main", "feedback", "kaihu_success"));
                          }
                         break;
                     case 1:
                         SendFrom2(pl);
                         break;
-                    default:
+                    case 2:
                         SendFrom3(pl);
                         break;
                 }
@@ -52,12 +53,13 @@ namespace ClassLibrary1
 
         public void From2()
         {
-
-            CunQian.Append(new Label("Label1Name", $"存钱"));
-            CunQian.Append(new Input("InputName", "输入你要存入钱的数量"));
+            CunQian.Append(new Label("Label1Name", cfg.get("form", "cunqian", "label", 0)));
+            CunQian.Append(new Input("InputName", cfg.get("form", "cunqian", "input", 0)));
             
             CunQian.Callback = (pl, val) =>
             {
+                if (val.Count == 0) return;
+
                 try
                 {
                     
@@ -67,14 +69,15 @@ namespace ClassLibrary1
                     bool isNumeric = int.TryParse(a, out n);
                     if (isNumeric == false)
                     {
-                        pl.SendText("你存钱可以存字符串是吧");
+                        pl.SendText(cfg.get("form", "cunqian", "feedback", "format_error"));
                     }
                     else
                     {
                         int hav = (int)EconomySystem.GetMoney(pl.Xuid);
                         if (hav < n)
                         {
-                            pl.SendText($"余额不足，存钱失败! 余额:{hav.ToString()}");
+                            string str = cfg.get("form", "cunqian", "feedback", "not_enough_money");
+                            pl.SendText(str.Replace("{money}", hav.ToString()));
                         }
                         else
                         {
@@ -82,13 +85,16 @@ namespace ClassLibrary1
                             string model = "+";
                             sqlHelper.Updata(n, pl.Xuid, model);
                             sqlHelper.ReadSql(pl.Xuid);
-                            pl.SendText($"已存入:{n},当前余额{sqlHelper.s}");
+
+                            string str = cfg.get("form", "cunqian", "feedback", "success");
+                            pl.SendText(str.Replace("{deposit}", n.ToString())
+                                           .Replace("{money}", sqlHelper.s.ToString()));
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    
+                    logger.Error.WriteLine(ex.Message);
                 }
             };
         }
@@ -98,11 +104,13 @@ namespace ClassLibrary1
         }
         public void Form3()
         {
-            QuQian.Append(new Label("Label2Name", "取钱"));
-            QuQian.Append(new Input("Input2Name", "输入你要取出的钱的数量"));
+            QuQian.Append(new Label("Label2Name", cfg.get("form", "quqian", "label", 0)));
+            QuQian.Append(new Input("Input2Name", cfg.get("form", "quqian", "input", 0)));
             
             QuQian.Callback = (pl, val) =>
             {
+                if (val.Count == 0) return;
+
                 try
                 {
                     Input input = (Input)val["Input2Name"];
@@ -111,14 +119,15 @@ namespace ClassLibrary1
                     bool isNumeric = int.TryParse(a, out n);
                     if (isNumeric == false)
                     {
-                        pl.SendText("你取钱可以取字符串是吧");
+                        pl.SendText(cfg.get("form", "quqian", "feedback", "format_error"));
                     }
                     else
                     {
                         sqlHelper.ReadSql(pl.Xuid);
                         if (sqlHelper.s < n)
                         {
-                            pl.SendText($"余额不足，取钱失败！余额:{sqlHelper.s}");
+                            string str = cfg.get("form", "quqian", "feedback", "not_enough_money");
+                            pl.SendText(str.Replace("{money}", sqlHelper.s.ToString()));
                         }
                         else
                         {
@@ -126,12 +135,15 @@ namespace ClassLibrary1
                             string model = "-";
                             sqlHelper.Updata(n, pl.Xuid, model);
                             sqlHelper.ReadSql(pl.Xuid);
-                            pl.SendText($"已取出:{n},当前余额{sqlHelper.s}");
+
+                            string str = cfg.get("form", "quqian", "feedback", "success");
+                            pl.SendText(str.Replace("{fetch}", n.ToString())
+                                           .Replace("{money}", sqlHelper.s.ToString()));
                         }
                     }
                 }
-                catch (Exception ex) { 
-                
+                catch (Exception ex) {
+                    logger.Error.WriteLine(ex.Message);
                 }
             };
         }

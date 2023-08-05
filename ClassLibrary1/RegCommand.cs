@@ -13,7 +13,6 @@ namespace ClassLibrary1
         DynamicCommandInstance cmd = CreateCommand("trbank", "A bank for owoser", CommandPermissionLevel.Any);
         public void CommandRegisiter()
         {
-            logger.Info.WriteLine("Registering Commands...");
             logger.Info.WriteLine("正在注册命令……");
             cmd.SetAlias("owobank");
             cmd.SetCallback((cmd, origin, output, results) =>
@@ -22,7 +21,6 @@ namespace ClassLibrary1
             });
             cmd.AddOverload(new List<string>());
             Setup(cmd);
-            logger.Info.WriteLine("Commands Registered!");
             logger.Info.WriteLine("命令注册成功！");
         }
     }

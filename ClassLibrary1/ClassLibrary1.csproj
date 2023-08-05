@@ -13,13 +13,10 @@
 
   <ItemGroup>
     <Reference Include="LiteLoader.NET">
-      <HintPath>..\..\..\..\Desktop\LiteLoader.NET.dll</HintPath>
+      <HintPath>..\dll\LiteLoader.NET.dll</HintPath>
     </Reference>
     <Reference Include="LLMoney.NET">
-      <HintPath>..\..\..\..\Desktop\LLMoney.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\..\Downloads\mysql.data\MySql.Data.dll</HintPath>
+      <HintPath>..\dll\LLMoney.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
 
