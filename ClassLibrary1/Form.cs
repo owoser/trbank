@@ -18,6 +18,7 @@ namespace ClassLibrary1
         public void Form1()
         {
             BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 0, "text"), cfg.get("form", "main", "button", 0, "icon")));
+            BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 3, "text"), cfg.get("form", "main", "button", 3, "icon")));
             BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 1, "text"), cfg.get("form", "main", "button", 1, "icon")));
             BuildBaseForm.Append(new Button(cfg.get("form", "main", "button", 2, "text"), cfg.get("form", "main", "button", 2, "icon")));
 
@@ -37,11 +38,29 @@ namespace ClassLibrary1
                              pl.SendText(cfg.get("form", "main", "feedback", "kaihu_have_existed"));
                          }
                         break;
-                    case 1:
+                    case 2:
                         SendFrom2(pl);
                         break;
-                    case 2:
+                    case 3:
                         SendFrom3(pl);
+                        break;
+                    case 1:
+
+                        bool notExist = !sqlHelper.exist(pl.Xuid);
+
+                        if (notExist)
+                        {
+                            pl.SendText(cfg.get("form", "common", "feedback", "not_exist"));
+
+                            return;
+                        }
+
+                        sqlHelper.ReadSql(pl.Xuid);
+
+                        string currentBalance = sqlHelper.s.ToString();
+                        string str = cfg.get("form", "main", "feedback", "query_account");
+                        pl.SendText(str.Replace("{money}", currentBalance));
+
                         break;
                 }
             };
@@ -64,7 +83,7 @@ namespace ClassLibrary1
 
                 if (notExist)
                 {
-                    pl.SendText(cfg.get("form", "cunqian", "feedback", "not_exist"));
+                    pl.SendText(cfg.get("form", "common", "feedback", "not_exist"));
 
                     return;
                 }
@@ -88,7 +107,7 @@ namespace ClassLibrary1
                     {
                         if (long.TryParse(a, out long xxxxx))
                         {
-                            pl.SendText(cfg.get("form", "cunqian", "feedback", "too_big_number"));
+                            pl.SendText(cfg.get("form", "common", "feedback", "too_big_number"));
 
                             return;
                         }
@@ -139,7 +158,7 @@ namespace ClassLibrary1
 
                 if (notExist)
                 {
-                    pl.SendText(cfg.get("form", "quqian", "feedback", "not_exist"));
+                    pl.SendText(cfg.get("form", "common", "feedback", "not_exist"));
 
                     return;
                 }
@@ -162,7 +181,7 @@ namespace ClassLibrary1
                     {
                         if (long.TryParse(a, out long xxxxx))
                         {
-                            pl.SendText(cfg.get("form", "quqian", "feedback", "too_big_number"));
+                            pl.SendText(cfg.get("form", "common", "feedback", "too_big_number"));
 
                             return;
                         }
