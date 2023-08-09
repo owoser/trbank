@@ -8,7 +8,7 @@ namespace ClassLibrary1
     internal class SqlHelper
     {
         public bool inture;
-        public int s;
+        public uint s;
         private static LoadConfig cfg = new();
         private static string a = $"data source = {cfg.get("db", "addr")}; port = {cfg.get("db", "port")}; database = {cfg.get("db", "base")}; user = {cfg.get("db", "user")}; password = {cfg.get("db", "pass")}; charset = utf8;";
         private MySqlConnection cnn = new MySqlConnection(a);
@@ -32,24 +32,44 @@ namespace ClassLibrary1
             this.open();
             cnn.Close();
         }
-        
-        public void creatSql1(string name,string xuid)
+
+        public bool exist(string xuid)
         {
+            bool result;
+
             this.open();
 
-            string sql = $"SELECT * FROM trbank WHERE xuid = '{xuid}'";
+            string sql = $"SELECT xuid FROM trbank WHERE xuid = '{xuid}'";
             MySqlCommand cmd = new MySqlCommand(sql, cnn);
             MySqlDataReader reader = cmd.ExecuteReader();
             cmd.Dispose();
-            inture = reader.HasRows;
+
+            result = reader.HasRows;
+
             reader.Close();
-            if (inture == false)
+            cnn.Close();
+
+            return result;
+        }
+        
+        public bool creatSql1(string name,string xuid)
+        {
+            bool notExist = !this.exist(xuid);
+
+            if (notExist)
             {
+                this.open();
+
                 string sql1 = $"insert into trbank (name,money,xuid) values('{name}',0,'{xuid}')"; ;
                 MySqlCommand cmd1 = new MySqlCommand(sql1, cnn);
                 cmd1.ExecuteNonQuery();
+
+                cnn.Close();
+
+                return true;
             }
-            cnn.Close();
+
+            return false;
         }
         public void ReadSql(string xuid)
         {
@@ -57,11 +77,11 @@ namespace ClassLibrary1
 
             string sql2 = $"select money from trbank where xuid= '{xuid}'"; ;
             MySqlCommand cmd1 = new MySqlCommand(sql2, cnn);
-            s = (int)cmd1.ExecuteScalar();
+            s = (uint)cmd1.ExecuteScalar();
             cnn.Close();
         }
 
-        public void Updata(int money,string xuid,string model)
+        public void Updata(uint money,string xuid,string model)
         {
             this.open();
 

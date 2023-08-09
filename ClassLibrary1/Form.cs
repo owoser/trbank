@@ -26,15 +26,15 @@ namespace ClassLibrary1
                 switch (val)
                 {
                     case 0:
-                         sqlHelper.creatSql1(pl.RealName, pl.Xuid);
+                         bool isCreat = sqlHelper.creatSql1(pl.RealName, pl.Xuid);
                             
-                         if (sqlHelper.inture == true)
+                         if (isCreat)
                          {
-                            pl.SendText(cfg.get("form", "main", "feedback", "kaihu_have_existed"));
+                             pl.SendText(cfg.get("form", "main", "feedback", "kaihu_success"));
                          }
                          else
                          {
-                             pl.SendText(cfg.get("form", "main", "feedback", "kaihu_success"));
+                             pl.SendText(cfg.get("form", "main", "feedback", "kaihu_have_existed"));
                          }
                         break;
                     case 1:
@@ -60,15 +60,39 @@ namespace ClassLibrary1
             {
                 if (val.Count == 0) return;
 
+                bool notExist = !sqlHelper.exist(pl.Xuid);
+
+                if (notExist)
+                {
+                    pl.SendText(cfg.get("form", "cunqian", "feedback", "not_exist"));
+
+                    return;
+                }
+
                 try
                 {
                     
                     Input input = (Input)val["InputName"];
                     string a = input.Value;
-                    int n;
-                    bool isNumeric = int.TryParse(a, out n);
+
+                    if (a == "")
+                    {
+                        pl.SendText(cfg.get("form", "cunqian", "feedback", "is_air"));
+
+                        return;
+                    }
+
+                    uint n;
+                    bool isNumeric = uint.TryParse(a, out n);
                     if (isNumeric == false)
                     {
+                        if (long.TryParse(a, out long xxxxx))
+                        {
+                            pl.SendText(cfg.get("form", "cunqian", "feedback", "too_big_number"));
+
+                            return;
+                        }
+
                         pl.SendText(cfg.get("form", "cunqian", "feedback", "format_error"));
                     }
                     else
@@ -111,14 +135,38 @@ namespace ClassLibrary1
             {
                 if (val.Count == 0) return;
 
+                bool notExist = !sqlHelper.exist(pl.Xuid);
+
+                if (notExist)
+                {
+                    pl.SendText(cfg.get("form", "quqian", "feedback", "not_exist"));
+
+                    return;
+                }
+
                 try
                 {
                     Input input = (Input)val["Input2Name"];
                     string a = input.Value;
-                    int n;
-                    bool isNumeric = int.TryParse(a, out n);
+
+                    if (a == "")
+                    {
+                        pl.SendText(cfg.get("form", "quqian", "feedback", "is_air"));
+
+                        return;
+                    }
+
+                    uint n;
+                    bool isNumeric = uint.TryParse(a, out n);
                     if (isNumeric == false)
                     {
+                        if (long.TryParse(a, out long xxxxx))
+                        {
+                            pl.SendText(cfg.get("form", "quqian", "feedback", "too_big_number"));
+
+                            return;
+                        }
+
                         pl.SendText(cfg.get("form", "quqian", "feedback", "format_error"));
                     }
                     else

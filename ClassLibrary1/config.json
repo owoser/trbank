@@ -12,15 +12,15 @@
 			"button": [
 				{
 					"text": "开户",
-					"icon": ""
+					"icon": "textures/ui/message"
 				},
 				{
 					"text": "存钱",
-					"icon": ""
+					"icon": "textures/ui/trade_icon"
 				},
 				{
 					"text": "取钱",
-					"icon": ""
+					"icon": "textures/ui/trade_icon"
 				}
 			],
 			"feedback": {
@@ -38,8 +38,11 @@
 			],
 			"feedback": {
 				"success": "已存入: {deposit}, 账户余额: {money}",
+				"is_air": "无法存入空气, 谢谢",
 				"format_error": "你存钱可以存字符串是吧",
-				"not_enough_money": "余额不足，存钱失败! 余额:{money}"
+				"not_enough_money": "余额不足，存钱失败! 余额:{money}",
+				"not_exist": "账户不存在，请开通账户！",
+				"too_big_number": "输入的数字太大了！"
 			}
 		},
 		"quqian": {
@@ -52,8 +55,11 @@
 			],
 			"feedback": {
 				"success": "已取出: {fetch}, 账户余额: {money}",
+				"is_air": "无法取出空气, 谢谢",
 				"format_error": "你取钱可以取字符串是吧",
-				"not_enough_money": "余额不足, 取钱失败! 余额:{money}"
+				"not_enough_money": "余额不足, 取钱失败! 余额:{money}",
+				"not_exist": "账户不存在，请开通账户！",
+				"too_big_number": "输入的数字太大了！"
 			}
 		}
 	}
