@@ -4,7 +4,7 @@
 		"port": 3306,
 		"user": "root",
 		"pass": "admin233",
-		"base": "trbank"
+		"base": "owoser"
 	},
 	"form": {
 		"common":{
@@ -15,6 +15,7 @@
 		},
 		"main": {
 			"title": "OWO跨服银行",
+			"cost": 200,
 			"button": [
 				{
 					"text": "开户",
@@ -34,7 +35,8 @@
 				}
 			],
 			"feedback": {
-				"kaihu_success": "账户开通成功!",
+				"kaihu_success": "账户开通成功! 已扣除{cost}元开户费用",
+				"kaihu_cost_not_enough": "身上钱包不足{cost}元，无法开户!",
 				"kaihu_have_existed": "已有账户无须再次开通!",
 				"query_account": "当前账户余额: {money}"
 			}
@@ -42,7 +44,7 @@
 		"cunqian": {
 			"title": "存钱",
 			"label": [
-				"存钱"
+				"身上钱包: {wallet}"
 			],
 			"input": [
 				"输入你要存入钱的数量"
@@ -57,7 +59,7 @@
 		"quqian": {
 			"title": "取钱",
 			"label": [
-				"取钱"
+				"账户余额: {balance}"
 			],
 			"input": [
 				"输入你要取出的钱的数量"

@@ -19,14 +19,12 @@ public class Trbank : IPluginInitializer
     //介绍
     public string Introduction => "A bank for owoser!";
     //版本
-    public Version Version => new(1, 0, 0);
+    public Version Version => new(0, 1, 6);
     //载入
     public void OnInitialize()
     {
         reg.CommandRegisiter();
-        a1.Form1();
-        a1.From2();
-        a1.Form3();
+        a1.BuildForm1();
 
         new SqlHelper().test();
 

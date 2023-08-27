@@ -17,7 +17,7 @@ namespace ClassLibrary1
             cmd.SetAlias("owobank");
             cmd.SetCallback((cmd, origin, output, results) =>
             {
-                a1.SendFrom1(origin.Player);
+                Form.SendForm1(origin.Player);
             });
             cmd.AddOverload(new List<string>());
             Setup(cmd);
