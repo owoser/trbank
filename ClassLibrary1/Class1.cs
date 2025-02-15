@@ -14,7 +14,7 @@ public class Trbank : IPluginInitializer
     //元信息
     public Dictionary<string, string> MetaData => new()
     {
-        {"Auther","wanan"}
+        {"Auther","wanan and longjie"}
     };
     //介绍
     public string Introduction => "A bank for owoser!";
